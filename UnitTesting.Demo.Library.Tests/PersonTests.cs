@@ -1,4 +1,6 @@
-﻿namespace UnitTesting.Demo.Library.Tests;
+﻿using System.Collections;
+
+namespace UnitTesting.Demo.Library.Tests;
 
 [TestFixture]
 public class PersonTests
@@ -55,5 +57,35 @@ public class PersonTests
 
         // Assert
         Assert.AreEqual(expectedFullName, fullName);
+    }
+
+    [Test]
+    //[TestCase(2000, 2021, 21)]
+    //[TestCase(2000, 2018, 18)]
+    //[TestCase(2000, 2001, 1)]
+    [TestCaseSource(nameof(GetAge_TestData))]
+    public void GetAge_WhenBirthYearIsBeforeOrEqualCurrentYear_ShouldCalculateProperAge(
+        int birthYear, int currentYear, int expectedAge)
+    {
+        // Arrange
+        const string firstName = "Jan";
+        const string lastName = "Kowalski";
+        Person person = new Person(firstName, lastName, birthYear);
+
+        // Act
+        int actualAge = person.GetAge(currentYear);
+
+        // Assert
+        Assert.AreEqual(expectedAge, actualAge);
+    }
+
+    private static IEnumerable GetAge_TestData
+    {
+        get
+        {
+            yield return new TestCaseData(2000, 2022, 22);
+            yield return new TestCaseData(2000, 2018, 18);
+            yield return new TestCaseData(2000, 2001, 1);
+        }
     }
 }
