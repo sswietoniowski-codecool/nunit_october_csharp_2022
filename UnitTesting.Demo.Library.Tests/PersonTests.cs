@@ -46,7 +46,10 @@ public class PersonTests
         string fullName = _person.FullName;
 
         // Assert
-        Assert.AreEqual(expectedFullName, fullName);
+        // classical
+        //Assert.AreEqual(expectedFullName, fullName);
+        // fluent
+        Assert.That(fullName, Is.EqualTo(expectedFullName));
     }
 
     [Test]
