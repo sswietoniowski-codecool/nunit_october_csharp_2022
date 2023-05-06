@@ -5,6 +5,17 @@ namespace UnitTesting.Demo.Library.Tests;
 [TestFixture]
 public class PersonTests
 {
+    const string _firstName = "Jan";
+    const string _lastName = "Kowalski";
+    const int _birthYear = 2000;
+    private Person _person;
+
+    [SetUp]
+    public void CreateTestPerson()
+    {
+        _person = new Person(_firstName, _lastName, _birthYear);
+    }
+
     [Test]
     public void Constructor_WhenCalled_ShouldInitializeProperties()
     {
@@ -19,8 +30,8 @@ public class PersonTests
         Person person = new Person(firstName, lastName, birthYear);
 
         // Assert
-        Assert.AreEqual(firstName, person.FirstName, "checking FirstName");
-        Assert.AreEqual(lastName, person.LastName, "checking LastName");
+        Assert.AreEqual(firstName, person.FirstName, "checking _firstName");
+        Assert.AreEqual(lastName, person.LastName, "checking _lastName");
         Assert.AreEqual(birthYear, person.BirthYear, "checking BirthYear");
     }
 
@@ -29,14 +40,10 @@ public class PersonTests
     public void FullName_WhenCalled_ShouldReturnProperName()
     {
         // Arrange
-        const string firstName = "Jan";
-        const string lastName = "Kowalski";
-        const int birthYear = 2000;
-        const string expectedFullName = $"{firstName} {lastName}";
-        Person person = new Person(firstName, lastName, birthYear);
+        const string expectedFullName = $"{_firstName} {_lastName}";
 
         // Act
-        string fullName = person.FullName;
+        string fullName = _person.FullName;
 
         // Assert
         Assert.AreEqual(expectedFullName, fullName);
@@ -87,5 +94,20 @@ public class PersonTests
             yield return new TestCaseData(2000, 2018, 18);
             yield return new TestCaseData(2000, 2001, 1);
         }
+    }
+
+    [Test]
+    public void GetAge_WhenBirthYearIsAfterCurrentYear_ShouldThrowArgumentException()
+    {
+        // Arrange
+        const string firstName = "Jan";
+        const string lastName = "Kowalski";
+        const int birthYear = 2000;
+        const int currentYear = 1999;
+        Person person = new Person(firstName, lastName, birthYear);
+
+        // Act
+        // Assert
+        Assert.Throws<ArgumentException>(() => person.GetAge(currentYear));
     }
 }
